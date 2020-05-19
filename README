@@ -5,7 +5,8 @@ I accidentally discovered that Cloudflare stop using reCaptch in favor of anothe
 Cloudflare wrote an article about it : [Moving from reCAPTCHA to hCaptcha](https://blog.cloudflare.com/moving-from-recaptcha-to-hcaptcha/)
 
 Basic usage on backend validator:
-```
+
+```php
 <?php
 
 $privToken = '';
