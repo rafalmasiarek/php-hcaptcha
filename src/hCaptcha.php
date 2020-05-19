@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * Copyright (C) 2020 Rafal Masiarek <rafal@masiarek.pl>
  *
