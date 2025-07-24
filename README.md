@@ -1,18 +1,65 @@
-# hCaptcha PHP Client
-## PHP hCaptcha Component Library
+# php-hcaptcha
 
-I accidentally discovered that Cloudflare stop using reCaptch in favor of another `hCaptcha` solution, which I started using this too with hope they collect less data about us than Google does
-Cloudflare wrote an article about it : [Moving from reCAPTCHA to hCaptcha](https://blog.cloudflare.com/moving-from-recaptcha-to-hcaptcha/)
+A lightweight PHP library to validate hCaptcha response tokens using multiple HTTP request methods (e.g. cURL, Guzzle). Useful for environments with limited dependencies or custom HTTP clients.
 
-Basic usage on backend validator:
+## Features
+
+- Supports cURL and Guzzle out of the box
+- PSR-4 autoloading
+- No external dependencies required by default (uses cURL)
+- Works with PHP 8.0 or newer
+
+## Installation
+
+Install via Composer:
+
+```bash
+composer require rafalmasiarek/php-hcaptcha
+```
+
+## Usage
+
+### Basic verification (default using cURL):
 
 ```php
-<?php
+use rafalmasiarek\hCaptcha\hCaptcha;
 
-$privToken = '';
-$hcaptcha = new rafalmasiarek\hCaptcha($privToken);
-$verify   = $hcaptcha->verify($_POST['h-captcha-response'])
-if( $verify['success'] == true) {
-    echo "Legit request!";
+$captcha = new hCaptcha('your-hcaptcha-secret-key');
+
+if ($captcha->verify($_POST['h-captcha-response'])) {
+    // Valid token
+} else {
+    // Invalid token
+    print_r($captcha->getLastErrorCodes());
 }
 ```
+
+### Using a custom request method (e.g., Guzzle):
+
+```php
+use rafalmasiarek\hCaptcha\hCaptcha;
+use rafalmasiarek\hCaptcha\Request\GuzzleRequestMethod;
+
+$captcha = new hCaptcha('your-secret', new GuzzleRequestMethod());
+
+if ($captcha->verify($_POST['h-captcha-response'])) {
+    // Success
+}
+```
+
+## Testing
+
+Run unit tests with PHPUnit:
+
+```bash
+vendor/bin/phpunit --bootstrap vendor/autoload.php tests
+```
+
+## Available Request Methods
+
+- `CurlRequestMethod` (default, uses native PHP cURL)
+- `GuzzleRequestMethod` (requires `guzzlehttp/guzzle`)
+
+## License
+
+MIT
